@@ -2,22 +2,29 @@ pipeline {
     agent any
 
     stages {
+
+        stage('Clone Code') {
+            steps {
+                git 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t kiran1975/nodejs-app:latest .'
+                sh 'docker build -t nodejs-demo .'
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Run Container Test') {
             steps {
-                sh 'docker push kiran1975/nodejs-app:latest'
+                sh 'docker rm -f node-container || true'
+                sh 'docker run -d -p 3000:3000 --name node-container nodejs-demo'
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Check Running Container') {
             steps {
-                sh 'kubectl apply -f k8s-deployment.yaml'
-                sh 'kubectl apply -f service.yaml'
+                sh 'docker ps'
             }
         }
     }
