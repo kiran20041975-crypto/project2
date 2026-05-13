@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
         - name: nodejs-container
-          image: nodejs-demo:latest
-          imagePullPolicy: Never
+          image: kiran1975/nodejs-demo:v1
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 3000
